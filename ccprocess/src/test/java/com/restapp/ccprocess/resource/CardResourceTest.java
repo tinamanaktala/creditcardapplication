@@ -24,6 +24,7 @@ import com.restapp.ccprocess.model.CreditCard;
 import com.restapp.ccprocess.service.CardProcessingService;
 
 @WebMvcTest(CardResource.class)
+@ActiveProfiles("default")
 public class CardResourceTest {
 	
 @Autowired
