@@ -81,5 +81,48 @@ public void getAllCreditCards_success() throws Exception
 	
 }
 
+//this test checks for invalid card that doesnt comply with Luhn10
+@Test
+public void addCard_testInvalidCardException() throws Exception
+{
+	CreditCard savedCard = new CreditCard();
+	savedCard.setBalance(0L);
+	savedCard.setCardHolderName("Jane");
+	savedCard.setCardLimit(1000L);
+	savedCard.setCardNumber("8763333333");
+	savedCard.setCardId(1L);
+	savedCard.setCreatedDate(new Date());
+	
+	MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.post("/v1/accounts/creditcards/cards")
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON)
+            .content(this.mapper.writeValueAsString(savedCard));
+	
+	mockMvc.perform(mockRequest)
+     .andExpect(status().isBadRequest())
+     .andExpect(jsonPath("$.message", Matchers.is("Invalid card data")));
+     
+}
+//this test checks for any mandatory field missing in the request
+@Test
+public void addCard_testMissingFieldsException() throws Exception
+{
+	CreditCard savedCard = new CreditCard();
+	savedCard.setBalance(0L);
+	savedCard.setCardHolderName("Jane");
+	savedCard.setCardNumber("8763333333");
+	savedCard.setCardId(1L);
+	savedCard.setCreatedDate(new Date());
+	
+	MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.post("/v1/accounts/creditcards/cards")
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON)
+            .content(this.mapper.writeValueAsString(savedCard));
+	
+	mockMvc.perform(mockRequest)
+     .andExpect(status().isBadRequest())
+     .andExpect(jsonPath("$.message", Matchers.is("Missing mandatory fields")));
+}
+
 
 }
