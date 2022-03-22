@@ -23,7 +23,6 @@ import com.restapp.ccprocess.service.CardProcessingService;
 import com.restapp.ccprocess.validations.Utility;
 
 @RestController
-@PreAuthorize("hasAuthority('ROLE_USER')")
 @RequestMapping(path = "v1/accounts")
 public class CardResource {
 
