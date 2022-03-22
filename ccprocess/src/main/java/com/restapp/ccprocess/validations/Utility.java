@@ -1,8 +1,10 @@
 package com.restapp.ccprocess.validations;
 
 import java.util.Date;
+import java.util.PrimitiveIterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.IntStream;
 
 import javax.validation.Valid;
 
@@ -52,9 +54,11 @@ public class Utility {
 		// this method checks if the card number is valid as per luhn 10 algorithm
 		StringBuilder builder = new StringBuilder(cardNumber);
 		String revertedString = builder.reverse().toString();
-		int sum = revertedString.chars().map(i -> i - '0').map(i -> i % 2 == 0 ? i * 2 : i).reduce(0,
+		PrimitiveIterator.OfInt factor =
+			      IntStream.iterate(1, i -> 3 - i).iterator();
+		int sum = revertedString.chars().map(i -> i - '0').map(i -> i*factor.nextInt()).reduce(0,
 				(a, b) -> a + b / 10 + b % 10);
-		return sum % 10 == 0;
+		return (sum % 10) == 0;
 	}
 
 	public static boolean checkMandatoryFields(@Valid CardPayload cardPayload) {
