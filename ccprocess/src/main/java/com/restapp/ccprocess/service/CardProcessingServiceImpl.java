@@ -9,6 +9,7 @@ import com.restapp.ccprocess.dao.CardProcessingRepository;
 import com.restapp.ccprocess.model.CreditCard;
 
 @Service
+@PreAuthorize("hasAuthority('ROLE_USER')")
 public class CardProcessingServiceImpl implements CardProcessingService {
 	
 	@Autowired
